@@ -1,107 +1,38 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LinguaPrompt — MVP</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LinguaPrompt</title>
 <style>
-:root{--ink:#123b73;--muted:#64748b;--primary:#5b4df5;--primary2:#7c6cff;--bg:#f7f9fc;--card:#fff;--line:#e5eaf2;--ok:#16a34a}
-*{box-sizing:border-box} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:#18324f}
-button,input,textarea{font:inherit} button{cursor:pointer}
-.top{height:64px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:5}
-.brand{font-weight:800;color:var(--ink);display:flex;gap:9px;align-items:center}.logo{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,#20c8ff,#5647ef);display:grid;place-items:center;color:#fff;font-size:16px}
-.nav{display:flex;gap:24px;font-size:13px;color:#52647b}.nav button{background:none;border:0;color:inherit}
-.container{max-width:1040px;margin:auto;padding:34px 22px 70px}.screen{display:none}.screen.active{display:block}
-.hero{display:grid;grid-template-columns:1.08fr .92fr;gap:36px;align-items:center;padding:52px 0 34px}
-.eyebrow{font-size:11px;font-weight:800;letter-spacing:.11em;color:#5b4df5}.hero h1{font-size:48px;line-height:1.05;margin:13px 0 18px;color:var(--ink);max-width:600px}.hero p{font-size:18px;line-height:1.6;color:#64748b;max-width:570px}
-.prompt-card{background:#fff;border:1px solid var(--line);box-shadow:0 16px 40px #203b5b12;border-radius:18px;padding:18px;margin-top:25px}.prompt-card textarea{width:100%;border:0;outline:0;resize:none;min-height:110px;color:#344a63}.cta{border:0;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;font-weight:750;padding:14px 20px;border-radius:11px;width:100%;box-shadow:0 8px 18px #5b4df533}.examples{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:26px}.example{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:left;min-height:120px}.example b{display:block;margin:6px 0;color:var(--ink);font-size:13px}.example span{font-size:11px;color:var(--muted);line-height:1.4}
-.illustration{background:linear-gradient(145deg,#eaf9ff,#f2efff);border-radius:30px;min-height:390px;display:grid;place-items:center;position:relative;overflow:hidden}.orb{width:220px;height:220px;border-radius:50%;background:#fff;box-shadow:0 25px 60px #4c57a022;display:grid;place-items:center;font-size:80px}.float{position:absolute;background:#fff;padding:12px 15px;border-radius:12px;box-shadow:0 12px 25px #17365b12;font-size:12px}.f1{top:45px;left:25px}.f2{right:25px;bottom:55px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 12px 30px #17365b0b}.panel h2{font-size:34px;color:var(--ink);margin:8px 0 8px}.panel p{color:var(--muted);line-height:1.55}.progress{height:7px;background:#e9edf4;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:var(--primary);border-radius:99px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.option{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff;text-align:left;margin:9px 0}.option.selected{border-color:var(--primary);box-shadow:0 0 0 2px #5b4df51a}.option input{margin-right:9px}
-.course-head{display:flex;gap:18px;align-items:center;background:linear-gradient(135deg,#f0fbff,#f6f2ff);border-radius:16px;padding:18px}.course-icon{width:74px;height:74px;border-radius:14px;display:grid;place-items:center;background:#dff4ff;font-size:38px}.lesson{display:flex;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}.num{width:38px;height:38px;border-radius:50%;background:#eaf4ff;color:#2a69a9;display:grid;place-items:center;font-weight:800;font-size:12px}.lesson b{display:block;color:var(--ink)}.lesson small{color:var(--muted)}
-.word{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);padding:15px;border-radius:12px;margin:9px 0}.speak{border:0;background:#eef0ff;color:var(--primary);width:34px;height:34px;border-radius:50%}.chat{height:420px;overflow:auto;border:1px solid var(--line);border-radius:16px;padding:18px;background:#fafcff}.bubble{max-width:78%;padding:12px 14px;border-radius:14px;margin:9px 0;line-height:1.45;font-size:14px}.ai{background:#eef4fb}.me{background:#e8e3ff;margin-left:auto}.chatbar{display:flex;gap:9px;margin-top:12px}.chatbar input{flex:1;border:1px solid var(--line);border-radius:12px;padding:13px;outline:none}.send{border:0;background:var(--primary);color:#fff;width:48px;border-radius:12px}
-.badge{display:inline-block;padding:6px 10px;background:#eaf8ef;color:#147a38;border-radius:999px;font-size:12px;font-weight:700}.muted{color:var(--muted)}.back{border:0;background:none;color:#52647b;padding:0 0 10px}.footer-note{text-align:center;color:#94a3b8;font-size:12px;margin-top:28px}
-@media(max-width:760px){.nav{display:none}.hero{grid-template-columns:1fr;padding-top:25px}.hero h1{font-size:38px}.illustration{min-height:240px}.examples{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.container{padding:22px 15px 50px}.top{padding:0 16px}}
-</style>
-</head>
-<body>
-<header class="top"><div class="brand"><span class="logo">✦</span>LinguaPrompt</div><nav class="nav"><button onclick="go('home')">How it works</button><button onclick="go('home')">Features</button><button onclick="go('home')">Pricing</button></nav><button class="nav" style="border:0;background:none">Log in</button></header>
-
-<main class="container">
-<section id="home" class="screen active">
-<div class="hero">
-<div>
-<div class="eyebrow">AI-POWERED LANGUAGE LEARNING</div>
-<h1>What do you need to be able to say?</h1>
-<p>Tell us your goal. LinguaPrompt builds a personalised language course around what you actually need to do.</p>
-<div class="prompt-card"><textarea id="prompt">I'm moving to Germany in two months. I'm a beginner and need to speak German at work, in shops and with my neighbours.</textarea><button class="cta" onclick="startGoal()">Build my course →</button></div>
-</div>
-<div class="illustration"><div class="orb">🗣️</div><div class="float f1">Real goals → personalised learning</div><div class="float f2">✦ Built by AI</div></div>
-</div>
-<h3 style="color:var(--ink)">Try an example</h3>
-<div class="examples">
-<button class="example" onclick="fill('I’m going to Italy for two weeks. Teach me what I need for hotels, restaurants and transport.')">✈️<b>Travel</b><span>Italy for two weeks: hotels, restaurants and transport.</span></button>
-<button class="example" onclick="fill('I have an interview in English on Friday. I’m B1 and struggle with speaking.')">💼<b>Job interview</b><span>Prepare for an English interview this Friday.</span></button>
-<button class="example" onclick="fill('I’m moving to Spain and need Spanish for everyday life.')">🏠<b>Moving abroad</b><span>Spanish for everyday life in Spain.</span></button>
-<button class="example" onclick="fill('I work in a hotel and need German to communicate with guests.')">🏨<b>Work</b><span>German for communicating with hotel guests.</span></button>
-</div>
-</section>
-
-<section id="goal" class="screen">
-<button class="back" onclick="go('home')">← Back</button>
-<div class="panel"><div style="display:flex;justify-content:space-between"><span class="eyebrow">STEP 1 OF 2</span><span class="muted">Personalise</span></div><div class="progress" style="margin:10px 0 22px"><i style="width:50%"></i></div>
-<h2>Tell us a little more</h2><p>We understood your main goal. Fine-tune it so we can create the right course.</p>
-<div class="grid2" style="margin-top:22px"><div><h4>What did we understand?</h4><div class="option">🇩🇪 <b>German</b></div><div class="option">🏨 <b>Working in a hotel</b></div><div class="option">📊 <b>Estimated level: A1–A2</b></div></div>
-<div><h4>How much time do you have?</h4><label class="option selected"><input type="radio" name="time" checked>10 min/day</label><label class="option"><input type="radio" name="time">15 min/day</label><label class="option"><input type="radio" name="time">30 min/day</label><h4 style="margin-top:18px">When do you need this?</h4><label class="option selected"><input type="radio" name="deadline" checked>No deadline</label><label class="option"><input type="radio" name="deadline">Within a month</label></div></div>
-<button class="cta" style="margin-top:22px" onclick="go('course')">Create my course →</button></div>
-</section>
-
-<section id="course" class="screen">
-<div class="panel"><span class="eyebrow">YOUR COURSE IS READY 🎉</span><div class="course-head" style="margin-top:12px"><div class="course-icon">🏨</div><div><h2 style="font-size:28px;margin:0">German for Hotel Work</h2><div class="muted">Beginner · 14 days · 10 min/day</div><p style="margin:7px 0 0">Your goal: communicate confidently with hotel guests in everyday situations.</p></div></div>
-<h3 style="margin-top:28px;color:var(--ink)">Your learning path</h3>
-<div id="lessons"></div><button class="cta" style="margin-top:20px" onclick="go('lesson')">Start Lesson 1 →</button></div>
-</section>
-
-<section id="lesson" class="screen">
-<button class="back" onclick="go('course')">← Back</button><div class="panel"><div style="display:flex;justify-content:space-between"><span class="eyebrow">LESSON 1 OF 7</span><span class="muted">~10 min</span></div><div class="progress" style="margin:10px 0 22px"><i style="width:14%"></i></div>
-<h2>Welcome your first guest</h2><p><b>Goal:</b> By the end of this lesson, you'll be able to greet a guest and ask how you can help.</p>
-<h3 style="color:var(--ink)">Learn</h3>
-<div class="word"><div><b>Guten Abend.</b><div class="muted">Good evening.</div></div><button class="speak" onclick="speak('Guten Abend')">🔊</button></div>
-<div class="word"><div><b>Herzlich willkommen.</b><div class="muted">Welcome.</div></div><button class="speak" onclick="speak('Herzlich willkommen')">🔊</button></div>
-<div class="word"><div><b>Wie kann ich Ihnen helfen?</b><div class="muted">How can I help you?</div></div><button class="speak" onclick="speak('Wie kann ich Ihnen helfen?')">🔊</button></div>
-<h3 style="color:var(--ink);margin-top:25px">Try it</h3><p>A guest walks into the hotel.</p><div class="panel" style="background:#fafcff;padding:15px"><b>Guest:</b> Guten Abend.<br><br><input id="answer" placeholder="Type your response..." style="width:100%;border:1px solid var(--line);border-radius:10px;padding:12px"></div>
-<button class="cta" style="margin-top:14px" onclick="checkAnswer()">Check my answer →</button><div id="feedback" style="margin-top:14px"></div></div>
-</section>
-
-<section id="conversation" class="screen">
-<button class="back" onclick="go('lesson')">← Back</button><div class="panel"><span class="eyebrow">AI CONVERSATION</span><h2>Hotel Reception</h2><p>You are the receptionist. I'll be your guest.</p>
-<div class="chat" id="chat"><div class="bubble ai"><b>Gast</b><br>Guten Abend. Ich habe eine Reservierung auf den Namen Müller.</div></div>
-<div class="chatbar"><input id="chatInput" placeholder="Type your response..."><button class="send" onclick="sendChat()">➤</button></div></div>
-</section>
-
-<section id="progress" class="screen">
-<div class="panel"><div class="badge">Lesson completed ✓</div><h2>Nice work! 🎉</h2><p>You completed your first LinguaPrompt lesson.</p><div class="grid2"><div><h3 style="color:var(--ink)">Your progress</h3><div class="word"><b>Communication</b><b>82%</b></div><div class="word"><b>Vocabulary</b><b>76%</b></div><div class="word"><b>Grammar</b><b>71%</b></div></div><div><h3 style="color:var(--ink)">Next</h3><div class="course-head"><div class="course-icon">🏨</div><div><b>Handling check-in</b><div class="muted">~12 minutes</div></div></div><button class="cta" style="margin-top:14px" onclick="go('conversation')">Practice conversation →</button></div></div></div>
-</section>
-<div class="footer-note">LinguaPrompt MVP · First functional slice · Demo mode</div>
+:root{--bg:#f7f8fc;--card:#fff;--text:#182033;--muted:#667085;--brand:#635bff;--line:#e7e9f2}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text)}
+header{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px}.logo{font-size:20px;font-weight:800}.logo span{color:var(--brand)}
+main{max-width:880px;margin:auto;padding:30px 15px 55px}.screen{display:none}.screen.active{display:block}.hero{text-align:center;padding:35px 0 22px}.hero h1{font-size:clamp(34px,7vw,58px);line-height:1.04;letter-spacing:-2px;margin:10px auto 15px;max-width:750px}.hero p{color:var(--muted);font-size:18px;max-width:650px;margin:0 auto 25px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:23px;box-shadow:0 14px 40px #18203312}.prompt{width:100%;min-height:145px;padding:17px;border:1px solid var(--line);border-radius:17px;resize:vertical;outline:none}button{font:inherit;cursor:pointer}.primary,.secondary,.example,.choice{border-radius:13px;padding:12px 17px;font-weight:750}.primary{border:0;background:var(--brand);color:#fff}.secondary{border:0;background:#efeeff;color:#4e46d5}.example,.choice{background:#fff;border:1px solid var(--line)}.choice.selected{background:#efeeff;border-color:var(--brand);color:#4e46d5}.actions,.choices,.examples{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}.examples{justify-content:center}.eyebrow{color:var(--brand);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}h2{font-size:31px;letter-spacing:-1px;margin:7px 0}.muted{color:var(--muted)}.small{font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px;margin-top:17px}.tile,.stat{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff}.lesson-list{display:grid;gap:9px;margin-top:18px}.lesson-item{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:15px;padding:14px}.num{width:34px;height:34px;border-radius:50%;background:#efeeff;color:#5048d9;display:grid;place-items:center;font-weight:800}.phrase{font-size:20px;font-weight:750;margin:7px 0 3px}.translation{color:var(--muted)}.feedback{display:none;background:#effaf5;color:#116b4b;border-radius:14px;padding:14px;margin-top:12px}.chat{min-height:210px;display:flex;flex-direction:column;gap:9px;margin:17px 0;overflow:auto}.msg{max-width:82%;padding:11px 14px;border-radius:17px}.msg.ai{background:#efeeff;align-self:flex-start}.msg.user{background:#182033;color:#fff;align-self:flex-end}.chatrow{display:flex;gap:8px}.chatrow input{flex:1;padding:12px;border:1px solid var(--line);border-radius:13px;outline:none}.stat strong{font-size:25px}.bar{height:9px;background:#ececf4;border-radius:99px;margin-top:7px;overflow:hidden}.bar i{display:block;height:100%;background:var(--brand)}.loading{text-align:center;padding:70px 10px}.spinner{width:42px;height:42px;border:4px solid #e8e8f2;border-top-color:var(--brand);border-radius:50%;margin:0 auto 16px;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}footer{text-align:center;color:#98a2b3;font-size:13px;margin-top:28px}@media(max-width:650px){.grid{grid-template-columns:1fr}.card{padding:18px}.actions>*{width:100%}.chatrow{flex-direction:column}}
+</style></head><body>
+<header><div class="logo">Lingua<span>Prompt</span></div><button id="newGoal" class="secondary" type="button">New goal</button></header><main>
+<section id="home" class="screen active"><div class="hero"><div class="eyebrow">AI language learning for real-life goals</div><h1>What do you need to be able to say?</h1><p>Tell us your goal. LinguaPrompt builds a practical personalised course around what you actually need.</p></div>
+<div class="card"><textarea id="goal" class="prompt" placeholder="Example: I'm travelling to Spain for two weeks. I'm a beginner and need Spanish for restaurants, hotels, transport and everyday conversation."></textarea><div class="actions"><button id="build" class="primary" type="button">Build my course →</button></div><div class="examples"><button class="example" data-text="I'm travelling to Spain for two weeks. I'm a beginner and need Spanish for restaurants, hotels, transport and everyday conversation." type="button">Travel</button><button class="example" data-text="I have a job interview in English next Friday. I'm intermediate and need to practise introducing myself, answering questions and talking about my experience." type="button">Job interview</button><button class="example" data-text="I'm moving to Germany in two months. I'm a beginner and need German for work, shops, neighbours and everyday life." type="button">Moving abroad</button></div></div><footer>No textbook. No fixed path. Just what you need to learn.</footer></section>
+<section id="personal" class="screen"><div class="card"><div class="eyebrow">Step 2 · Personalise</div><h2>Here's what we understood</h2><p id="summary" class="muted"></p><div class="grid"><div class="tile"><b>Target language</b><br><span id="lang">Spanish</span></div><div class="tile"><b>Goal</b><br><span id="type">Real-life communication</span></div></div><div style="margin-top:21px"><b>Your level</b><div id="levels" class="choices"><button class="choice selected" data-value="Beginner" type="button">Beginner</button><button class="choice" data-value="Intermediate" type="button">Intermediate</button><button class="choice" data-value="Advanced" type="button">Advanced</button></div></div><div style="margin-top:20px"><b>Time per day</b><div id="times" class="choices"><button class="choice selected" data-value="10 min" type="button">10 min</button><button class="choice" data-value="15 min" type="button">15 min</button><button class="choice" data-value="30 min" type="button">30 min</button></div></div><div class="actions"><button id="create" class="primary" type="button">Create my course →</button><button id="back" class="secondary" type="button">← Back</button></div></div></section>
+<section id="loading" class="screen"><div class="card loading"><div class="spinner"></div><h2>Building your course…</h2><p class="muted">Turning your goal into practical lessons.</p></div></section>
+<section id="course" class="screen"><div class="card"><div class="eyebrow">Your personalised course</div><h2 id="courseTitle"></h2><p id="meta" class="muted"></p><p>Goal: communicate confidently in the real situations from your prompt.</p><div id="lessons" class="lesson-list"></div><div class="actions"><button id="start" class="primary" type="button">Start Lesson 1 →</button></div></div></section>
+<section id="lesson" class="screen"><div class="card"><div class="eyebrow">Lesson 1 · Practical phrases</div><h2>Greetings & introductions</h2><p class="muted">Learn two useful phrases, then try one yourself.</p><div class="tile"><div id="p1" class="phrase"></div><div id="t1" class="translation"></div><button id="listen" class="secondary" type="button" style="margin-top:11px">🔊 Listen</button></div><div class="tile" style="margin-top:11px"><div id="p2" class="phrase"></div><div id="t2" class="translation"></div></div><div style="margin-top:18px"><b>Your turn</b><p class="muted">Imagine you meet someone for the first time. Write a friendly greeting.</p><input id="answer" placeholder="Type your answer…" style="width:100%;padding:13px;border:1px solid var(--line);border-radius:13px;outline:none"><div class="actions"><button id="check" class="primary" type="button">Check my answer</button></div><div id="feedback" class="feedback"></div></div><div class="actions"><button id="toChat" class="primary" disabled type="button">Continue to conversation →</button></div></div></section>
+<section id="chat" class="screen"><div class="card"><div class="eyebrow">AI Conversation</div><h2>Everyday conversation</h2><p class="muted">Have a short practical conversation. Don't worry about mistakes.</p><div id="chatBox" class="chat"></div><div class="chatrow"><input id="chatInput" placeholder="Type your reply…"><button id="send" class="primary" type="button">Send</button></div><div class="actions"><button id="finish" class="secondary" type="button">Finish conversation</button></div></div></section>
+<section id="progress" class="screen"><div class="card"><div class="eyebrow">Progress</div><h2>Nice work! 🎉</h2><p class="muted">Your first practice session is complete.</p><div class="grid"><div class="stat"><div class="small muted">Communication</div><strong>82%</strong><div class="bar"><i style="width:82%"></i></div></div><div class="stat"><div class="small muted">Vocabulary</div><strong>76%</strong><div class="bar"><i style="width:76%"></i></div></div><div class="stat"><div class="small muted">Grammar</div><strong>71%</strong><div class="bar"><i style="width:71%"></i></div></div><div class="stat"><div class="small muted">Next lesson</div><strong style="font-size:18px">~12 min</strong></div></div><div class="actions"><button id="continue" class="primary" type="button">Continue learning →</button><button id="another" class="secondary" type="button">Try another goal</button></div></div></section>
 </main>
-
 <script>
-const lessonData=[
-['01','Greetings & introductions','Meet guests and introduce yourself.'],
-['02','Check-in & reservations','Handle arrivals and bookings.'],
-['03','Hotel facilities','Explain rooms, breakfast and services.'],
-['04','Giving directions','Help guests find places.'],
-['05','Requests & problems','Understand and solve common issues.'],
-['06','Phone calls','Handle simple calls.'],
-['07','Real hotel conversation','Put everything together.']
-];
-document.getElementById('lessons').innerHTML=lessonData.map(x=>`<div class="lesson"><div class="num">${x[0]}</div><div><b>${x[1]}</b><small>${x[2]}</small></div><span style="margin-left:auto">›</span></div>`).join('');
-function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');scrollTo(0,0)}
-function fill(t){document.getElementById('prompt').value=t}
-function startGoal(){go('goal')}
-function checkAnswer(){const a=document.getElementById('answer').value.trim();const f=document.getElementById('feedback');if(!a){f.innerHTML='<span class="muted">Try writing a response first.</span>';return}f.innerHTML='<div class="option selected">✓ <b>Good!</b><br><span class="muted">A natural answer is: “Guten Abend. Wie kann ich Ihnen helfen?”</span></div><button class="cta" onclick="go(\\'conversation\\')">Use it in a real conversation →</button>'}
-function speak(t){if('speechSynthesis' in window){const u=new SpeechSynthesisUtterance(t);u.lang='de-DE';speechSynthesis.speak(u)}}
-function sendChat(){const i=document.getElementById('chatInput');const t=i.value.trim();if(!t)return;const c=document.getElementById('chat');c.innerHTML+=`<div class="bubble me"><b>You</b><br>${escapeHtml(t)}</div>`;i.value='';setTimeout(()=>{c.innerHTML+=`<div class="bubble ai"><b>Gast</b><br>Danke. Ich habe eine Reservierung. Können Sie mir bitte helfen?</div>`;c.scrollTop=c.scrollHeight},450)}
-function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-</script>
-</body></html>
+document.addEventListener("DOMContentLoaded",function(){
+const $=id=>document.getElementById(id), screens=[...document.querySelectorAll(".screen")], s={goal:"",lang:"Spanish",level:"Beginner",time:"10 min",turns:0};
+function show(id){screens.forEach(x=>x.classList.toggle("active",x.id===id));window.scrollTo(0,0)}
+function guess(t){t=t.toLowerCase();if(/german|germany|deutsch/.test(t))return"German";if(/french|france|français|paris/.test(t))return"French";if(/italian|italy|italiano|rome/.test(t))return"Italian";if(/english|england|london/.test(t))return"English";if(/portuguese|portugal|português/.test(t))return"Portuguese";return"Spanish"}
+function phrases(l){return({Spanish:[["Hola, ¿cómo estás?","Hello, how are you?"],["Mucho gusto.","Nice to meet you."]],German:[["Hallo, wie geht es Ihnen?","Hello, how are you?"],["Freut mich, Sie kennenzulernen.","Nice to meet you."]],French:[["Bonjour, comment allez-vous ?","Hello, how are you?"],["Enchanté(e).","Nice to meet you."]],Italian:[["Ciao, come stai?","Hello, how are you?"],["Piacere di conoscerti.","Nice to meet you."]],English:[["Hello, how are you?","Hello, how are you?"],["Nice to meet you.","Nice to meet you."]],Portuguese:[["Olá, como está?","Hello, how are you?"],["Muito prazer.","Nice to meet you."]]})[l]||phrases("Spanish")}
+document.querySelectorAll(".example").forEach(b=>b.addEventListener("click",()=>{$("goal").value=b.dataset.text;$("goal").focus()}));
+$("build").addEventListener("click",()=>{let v=$("goal").value.trim();if(!v){$("goal").focus();return}s.goal=v;s.lang=guess(v);$("summary").textContent=v;$("lang").textContent=s.lang;$("type").textContent=/interview|job|work|hotel/i.test(v)?"Professional communication":"Real-life communication";show("personal")});
+document.querySelectorAll("#levels .choice").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#levels .choice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");s.level=b.dataset.value}));
+document.querySelectorAll("#times .choice").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#times .choice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");s.time=b.dataset.value}));
+$("back").addEventListener("click",()=>show("home"));$("newGoal").addEventListener("click",()=>{$("goal").value="";show("home")});$("another").addEventListener("click",()=>{$("goal").value="";show("home")});
+$("create").addEventListener("click",()=>{show("loading");setTimeout(()=>{$("courseTitle").textContent=s.lang+" for Real Life";$("meta").textContent=s.level+" · 14 days · "+s.time+"/day";let a=["Greetings & introductions","Essential vocabulary","Real-life requests","Listening practice","Everyday conversation","Handling problems","Real-world roleplay"];$("lessons").innerHTML=a.map((x,i)=>'<div class="lesson-item"><div class="num">'+(i+1)+'</div><div><b>'+x+'</b><div class="small muted">'+(i?"Practical practice":"Ready to start")+"</div></div></div>").join("");show("course")},600)});
+$("start").addEventListener("click",()=>{let p=phrases(s.lang);$("p1").textContent=p[0][0];$("t1").textContent=p[0][1];$("p2").textContent=p[1][0];$("t2").textContent=p[1][1];$("p1").dataset.speak=p[0][0];$("answer").value="";$("feedback").style.display="none";$("toChat").disabled=true;show("lesson")});
+$("listen").addEventListener("click",()=>{if("speechSynthesis"in window){let u=new SpeechSynthesisUtterance($("p1").dataset.speak);speechSynthesis.cancel();speechSynthesis.speak(u)}});
+$("check").addEventListener("click",()=>{if(!$("answer").value.trim()){$("answer").focus();return}$("feedback").textContent="Good job! Your answer communicates the idea. Keep practising natural greetings and pronunciation.";$("feedback").style.display="block";$("toChat").disabled=false});
+$("toChat").addEventListener("click",()=>{s.turns=0;$("chatBox").innerHTML='<div class="msg ai">Hello! Welcome. How are you today?</div>';$("chatInput").value="";show("chat")});
+function send(){let v=$("chatInput").value.trim();if(!v)return;let u=document.createElement("div");u.className="msg user";u.textContent=v;$("chatBox").appendChild(u);$("chatInput").value="";s.turns++;let r=["Great! Nice to meet you. What brings you here?","That sounds good. How can I help you today?","Excellent. You are communicating clearly!"][Math.min(s.turns-1,2)];let a=document.createElement("div");a.className="msg ai";a.textContent=r;$("chatBox").appendChild(a)}
+$("send").addEventListener("click",send);$("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter")send()});$("finish").addEventListener("click",()=>show("progress"));$("continue").addEventListener("click",()=>show("course"));
+});
+</script></body></html>
